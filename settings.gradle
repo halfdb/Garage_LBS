@@ -1,1 +1,1 @@
-include ':app'
+include ':support', ':sniffer', ':locator'
