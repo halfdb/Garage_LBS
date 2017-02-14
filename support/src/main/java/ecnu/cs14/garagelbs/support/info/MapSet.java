@@ -44,14 +44,16 @@ final class MapSet {
     JSONObject toJson() throws JSONException {
         JSONObject json = new JSONObject();
         HashSet<Ap> aps = new HashSet<>();
+        JSONArray jsonArray = new JSONArray();
         for (MapData map :
                 mapDatas) {
-            json.accumulate("maps", map.toJson());
+            jsonArray.put(map.toJson());
             for (Ap ap :
                     map.aps) {
                 aps.add(ap);
             }
         }
+        json.put("maps", jsonArray);
         for (Ap ap :
                 aps) {
             json.accumulate("aps", ap.toJson());

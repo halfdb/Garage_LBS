@@ -1,6 +1,7 @@
 package ecnu.cs14.garagelbs.support.info;
 
 import android.os.Environment;
+import android.util.Log;
 import ecnu.cs14.garagelbs.support.data.Ap;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,6 +15,7 @@ import java.util.*;
  */
 
 final class FileSystem {
+    private static final String TAG = FileSystem.class.getName();
     private File path;
     private Map<Ap, String> index;
     FileSystem() {
@@ -105,6 +107,7 @@ final class FileSystem {
 
     void saveMapSet(String filename, MapSet mapSet) throws IOException, JSONException {
         OutputStream stream = new FileOutputStream(new File(path, filename));
+        Log.d(TAG, "saveMapSet: MapSet JSON: " + mapSet.toJson().toString());
         stream.write(mapSet.toJson().toString().getBytes());
         updateIndex(mapSet.getAps(), filename);
     }

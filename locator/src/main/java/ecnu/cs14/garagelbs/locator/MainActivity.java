@@ -159,5 +159,6 @@ public final class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mPositionNeedsUpdating = false;
+        mLocator.finish();
     }
 }

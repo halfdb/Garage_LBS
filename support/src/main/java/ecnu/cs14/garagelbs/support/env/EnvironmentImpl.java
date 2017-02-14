@@ -72,6 +72,7 @@ final class EnvironmentImpl extends Environment implements Wifi.ScanResultsRecei
             mResultsUpdated = false;
         }
         Log.i(TAG, "getAps: aps got");
+        Log.d(TAG, "getAps: aps: " + list.toString());
         return list;
     }
 
@@ -83,7 +84,7 @@ final class EnvironmentImpl extends Environment implements Wifi.ScanResultsRecei
     @Override
     @NonNull
     public Fingerprint generateFingerprint(Collection<Ap> base) {
-        int sampleCnt = 5;
+        final int sampleCnt = 5;
         List[] scans = new List[sampleCnt];
         for (int i = 0; i < sampleCnt; i++) {
             synchronized (mResults) {
@@ -111,12 +112,18 @@ final class EnvironmentImpl extends Environment implements Wifi.ScanResultsRecei
             ArrayList<Integer> signals = new ArrayList<>(sampleCnt);
             for (int i = 0; i < sampleCnt; i++) {
                 List scan = scans[i];
+                boolean found = false;
                 for (int j = 0; j < scan.size(); j++) {
                     ScanResult scanResult = (ScanResult) scan.get(j);
                     if (scanResult.BSSID.equals(ap.mac)) {
 //                        signal += WifiManager.calculateSignalLevel(scanResult.level, SIGNAL_LEVEL_NUM);
-                        signals.add(i, WifiManager.calculateSignalLevel(scanResult.level, SIGNAL_LEVEL_NUM));
+                        signals.add(WifiManager.calculateSignalLevel(scanResult.level, SIGNAL_LEVEL_NUM));
+                        found = true;
+                        break;
                     }
+                }
+                if (!found) {
+                    signals.add(0);
                 }
             }
 //            fingerprint.put(ap, signal);
