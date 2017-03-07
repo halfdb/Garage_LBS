@@ -37,14 +37,13 @@ public final class Locator {
         spaceInfo = SpaceInfo.getInstance(context);
 
         maps = spaceInfo.getAllMaps(aps);
-        MapData originalMap = spaceInfo.autoSelectMap(aps);
-        map = copyMapBase(originalMap);
-        mapIndex = maps.indexOf(originalMap);
+        map = spaceInfo.autoSelectMap(aps);
+        mapIndex = maps.indexOf(map);
 
         try {
             algorithm = algorithmClass.getConstructor(MapData.class).newInstance(map);
         } catch (Exception e) {
-            Log.e(TAG, "Locator: failed to instantiate the Algorithm: " + algorithmClass.getName(), e);
+            Log.e(TAG, "Locator: failed to instantiate the AlgorithmImpl: " + algorithmClass.getName(), e);
             throw e;
         }
     }
@@ -74,7 +73,7 @@ public final class Locator {
      */
     public void changeMap(int index) {
         mapIndex = index;
-        map = copyMapBase(spaceInfo.selectMap(index));
+        map = spaceInfo.selectMap(index);
     }
 
     /**

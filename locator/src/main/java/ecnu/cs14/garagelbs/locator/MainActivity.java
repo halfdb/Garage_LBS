@@ -14,6 +14,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.Toast;
+import ecnu.cs14.garagelbs.locator.probability_distribution.AlgorithmImpl;
 
 import java.lang.ref.WeakReference;
 
@@ -100,7 +101,7 @@ public final class MainActivity extends AppCompatActivity {
             public void run() {
                 Message msg = new Message();
                 try {
-                    msg.obj = new Locator(MainActivity.this, DummyAlgorithm.class);
+                    msg.obj = new Locator(MainActivity.this, AlgorithmImpl.class);
                 } catch (Throwable e) {
                     msg.obj = null;
                 }

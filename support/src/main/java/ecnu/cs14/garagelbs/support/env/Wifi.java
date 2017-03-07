@@ -36,7 +36,7 @@ final class Wifi extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.i(TAG, "onReceive: started");
+//        Log.i(TAG, "onReceive: started");
         List<ScanResult> list = mManager.getScanResults();
         for (WeakReference<ScanResultsReceiver> r :
                 mCallbacks) {
@@ -50,7 +50,7 @@ final class Wifi extends BroadcastReceiver {
     }
 
     void scan() {
-        Log.i(TAG, "scan: started");
+//        Log.i(TAG, "scan: started");
         if (!mManager.isWifiEnabled()) {
             enable();
         }

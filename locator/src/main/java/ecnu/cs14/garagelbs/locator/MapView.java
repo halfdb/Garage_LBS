@@ -89,7 +89,7 @@ public class MapView extends View {
 
     private HashSet<Pair<Integer, Integer>> mPositions = new HashSet<>();
     private Pair<Integer, Integer> mPosition;
-    private static final float DOT_RADIUS = 5.0f;
+    private static final float DOT_RADIUS = 20.0f;
     public void setPositionDot(Pair<Integer, Integer> position) {
         mPosition = position;
         invalidate();
@@ -101,7 +101,7 @@ public class MapView extends View {
         int hMode = MeasureSpec.getMode(heightMeasureSpec);
         int wSize = MeasureSpec.getSize(widthMeasureSpec);
         int hSize = MeasureSpec.getSize(heightMeasureSpec);
-        Log.i(TAG, "onMeasure: wMode: " + wMode + " hMode: " + hMode + " wSize: " + wSize + " hSize: " + hSize);
+        // Log.i(TAG, "onMeasure: wMode: " + wMode + " hMode: " + hMode + " wSize: " + wSize + " hSize: " + hSize);
         setMeasuredDimension(wSize, hSize);
     }
 
@@ -127,7 +127,7 @@ public class MapView extends View {
             canvas.drawCircle(circle.center_left, circle.center_top, circle.radius, mShapePaint);
         }
         if (mPosition != null) {
-            canvas.drawCircle(mPosition.first, mPosition.second, DOT_RADIUS, mPositionDotPaint);
+            canvas.drawCircle(mPosition.first, mPosition.second, DOT_RADIUS / s, mPositionDotPaint);
         }
     }
 }
