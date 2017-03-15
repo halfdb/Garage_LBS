@@ -125,8 +125,7 @@ public class MapView extends View {
                 mCircles) {
             canvas.drawCircle(circle.center_left, circle.center_top, circle.radius, mShapePaint);
         }
-        for (Pair<Integer, Integer> p :
-                mPositions) {
+        for (Pair<Integer, Integer> p : mPositions) {
             canvas.drawCircle((float) p.first, (float) p.second, DOT_RADIUS, mPositionDotPaint);
         }
     }

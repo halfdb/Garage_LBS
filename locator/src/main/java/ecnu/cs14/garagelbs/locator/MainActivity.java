@@ -2,6 +2,7 @@ package ecnu.cs14.garagelbs.locator;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,21 +10,31 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import ecnu.cs14.garagelbs.locator.probability_distribution.AlgorithmImpl;
+import ecnu.cs14.garagelbs.support.data.Fingerprint;
 
+import java.io.FileNotFoundException;
 import java.lang.ref.WeakReference;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public final class MainActivity extends AppCompatActivity {
     private final static String TAG = MainActivity.class.getName();
 
     private MapView mMapView;
     private ProgressDialog waitingDialog;
+    private TextView mErrorTextView;
     private Locator mLocator;
+    private TestLogger mLogger;
     private final MainActivityHandler mHandler = new MainActivityHandler(this);
 
 
@@ -44,6 +55,11 @@ public final class MainActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
+                case MSG_FINGERPRINT:
+                {
+                    mActivityRef.get().receiveFingerprint((Fingerprint) msg.obj);
+                    break;
+                }
                 case MSG_LOCATOR:
                 {
                     mActivityRef.get().receiveLocator((Locator) msg.obj);
@@ -54,29 +70,118 @@ public final class MainActivity extends AppCompatActivity {
                     mActivityRef.get().updatePosition((Pair<Integer, Integer>) msg.obj);
                     break;
                 }
+                case MSG_POSITION_STRING:
+                {
+                    mActivityRef.get().receivePositionString((String) msg.obj);
+                    break;
+                }
             }
         }
     }
 
     private long mLastUpdateTime = 0;
-    private boolean mPositionNeedsUpdating = true;
+    private boolean mWorking = true;
     private void updatePosition(Pair<Integer, Integer> position) {
         long time = System.currentTimeMillis();
-        if (mPositionNeedsUpdating && time - mLastUpdateTime > 3000) {
+        if (mWorking && time - mLastUpdateTime > 3000) {
             if (position != null) {
                 mMapView.setPositionDot(position);
                 mLastUpdateTime = System.currentTimeMillis();
             }
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    Message msg = new Message();
-                    msg.obj = mLocator.locate();
-                    msg.what = MainActivityHandler.MSG_POSITION_PAIR;
-                    mHandler.sendMessage(msg);
-                }
-            }).start();
         }
+        // startUpdating();
+    }
+
+    public void startTesting(View v) {
+        if (null == mLocator) {
+            return;
+        }
+        waitingDialog.show();
+        startUpdating();
+        showPositionInputDialog();
+    }
+
+    private void showPositionInputDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final EditText editText = new EditText(this);
+        editText.setText("300 400");
+        editText.selectAll();
+        builder.setTitle("输入当前坐标")
+                .setView(editText)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Message msg = new Message();
+                        msg.obj = editText.getText().toString();
+                        msg.what = MainActivityHandler.MSG_POSITION_STRING;
+                        mHandler.sendMessage(msg);
+                    }
+                })
+                .setCancelable(false)
+                .show();
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask()   {
+            public void run() {
+                InputMethodManager inputManager = (InputMethodManager) MainActivity.this.getSystemService(INPUT_METHOD_SERVICE);
+                inputManager.showSoftInput(editText, 0);
+            }
+        }, 500);
+    }
+
+    private void startUpdating() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Message msg = new Message();
+                msg.obj = mLocator.getFingerprint();
+                msg.what = MainActivityHandler.MSG_FINGERPRINT;
+                mHandler.sendMessage(msg);
+            }
+        }).start();
+    }
+
+    private Pair<Integer, Integer> mActualPosition;
+    private boolean mPositionUpdated = false;
+    private synchronized void receivePositionString(String string) {
+        String[] stringPair = string.split("\\s");
+        if (stringPair.length == 2) {
+            mActualPosition = new Pair<>(
+                    Integer.valueOf(stringPair[0]),
+                    Integer.valueOf(stringPair[1])
+            );
+            if (mActualPosition.first != null && mActualPosition.second != null) {
+                mPositionUpdated = true;
+            }
+        }
+        if (!mPositionUpdated) {
+            showPositionInputDialog();
+        } else if (mFingerprintUpdated) {
+            logTest();
+        }
+    }
+
+    private boolean mFingerprintUpdated = false;
+    private Fingerprint mFingerprint;
+    private Pair<Integer, Integer> mCalculatedPosition;
+    private synchronized void receiveFingerprint(Fingerprint fingerprint) {
+        mFingerprint = fingerprint;
+        mFingerprintUpdated = true;
+        mCalculatedPosition = mLocator.locate(mFingerprint);
+        updatePosition(mCalculatedPosition);
+        if (mPositionUpdated) {
+            logTest();
+        }
+    }
+
+    private synchronized void logTest() {
+        TestLogger.Test test = new TestLogger.Test(mFingerprint, mCalculatedPosition, mActualPosition);
+        mLogger.log(test);
+        mErrorTextView.setText("实际：" + mActualPosition.first + ", " + mActualPosition.second
+                + "\n计算：" + mCalculatedPosition.first + ", " + mCalculatedPosition.second
+                + "\n误差: " + test.error());
+        mFingerprintUpdated = false;
+        mPositionUpdated = false;
+        waitingDialog.dismiss();
     }
 
     private void receiveLocator(final Locator locator) {
@@ -86,7 +191,7 @@ public final class MainActivity extends AppCompatActivity {
             return;
         }
         mLocator = locator;
-        updatePosition(null);
+        // startUpdating();
         mMapView.setVisibility(View.VISIBLE);
         mMapView.setMap(locator.getMaps().get(locator.getMapIndex()));
     }
@@ -125,6 +230,16 @@ public final class MainActivity extends AppCompatActivity {
             mMapView.setEmptyView(progressBar);
         }
         mMapView.setVisibility(View.GONE);
+
+        try {
+            mLogger = new TestLogger();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "无法建立测试记录", Toast.LENGTH_LONG).show();
+            finish();
+        }
+
+        mErrorTextView = (TextView) findViewById(R.id.error_textview);
     }
 
     private void tryRequestPermissions() {
@@ -159,7 +274,16 @@ public final class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mPositionNeedsUpdating = false;
-        mLocator.finish();
+        mWorking = false;
+        try {
+            mLocator.finish();
+        } catch (Exception e) {
+           e.printStackTrace();
+        }
+        try {
+            mLogger.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

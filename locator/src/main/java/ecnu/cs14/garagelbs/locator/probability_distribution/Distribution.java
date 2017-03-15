@@ -18,7 +18,7 @@ final class Distribution {
     private HashMap<Ap, SparseIntArray> distribution = new HashMap<>();
     private HashMap<Ap, Set<Integer>> signalRanges;
     Distribution(Fingerprint fingerprint) {
-        sampleCount = (float) fingerprint.sampleCount;
+        sampleCount = (double) fingerprint.sampleCount;
         for (Ap ap :
                 fingerprint.keySet()) {
             aps.add(ap);

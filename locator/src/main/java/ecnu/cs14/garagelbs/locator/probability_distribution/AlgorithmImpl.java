@@ -19,7 +19,6 @@ import static java.lang.Math.*;
 
 public final class AlgorithmImpl extends Algorithm {
     private static final String TAG = AlgorithmImpl.class.getName();
-    private List<Ap> aps;
     private ArrayList<Distribution> distributions = new ArrayList<>();
     private ArrayList<Pair<Integer, Integer>> locations = new ArrayList<>();
 
@@ -27,7 +26,6 @@ public final class AlgorithmImpl extends Algorithm {
 
     public AlgorithmImpl(MapData map) {
         super(map);
-        aps = new ArrayList<>(map.aps);
         for (Sample sample :
                 map.samples) {
             locations.add(sample.first);
@@ -35,8 +33,8 @@ public final class AlgorithmImpl extends Algorithm {
         }
     }
 
-    private static final int TAILOR_AP_LIMIT = 4;
-    private static final int TAILOR_LOCATION_LIMIT = 5;
+    private static final int TAILOR_AP_LIMIT = 8; // q
+    private static final int TAILOR_LOCATION_LIMIT = 15; // k
     @Override
     public Pair<Integer, Integer> locate(Fingerprint fingerprint) {
         if (closed) {
@@ -56,18 +54,20 @@ public final class AlgorithmImpl extends Algorithm {
             for (int j = 0; j < locationCount; j++) {
                 for (int signal :
                         signalRange) {
-                    coefficient[i][j] += sqrt(distribution.p(ap, signal) * distributions.get(j).p(ap, signal));
+                    coefficient[i][j] += sqrt(distribution.p(ap, signal)) * sqrt(distributions.get(j).p(ap, signal));
                 }
             }
         }
 
         // calculate the Bhattacharyya distance
         double[] distance = new double[locationCount];
+        double logq = log((double) TAILOR_AP_LIMIT);
         for (int i = 0; i < locationCount; i++) {
             for (int j = 0; j < apCount; j++) {
                 distance[i] += coefficient[j][i];
             }
-            distance[i] = -log(distance[i] / (double) TAILOR_AP_LIMIT);
+            // distance[i] = -log(distance[i] / (double) TAILOR_AP_LIMIT);
+            distance[i] = logq - log(distance[i]);
         }
 
         // choose some nearest locations
