@@ -1,8 +1,8 @@
 package ecnu.cs14.garagelbs.locator;
 
 import android.os.Environment;
-import android.util.Pair;
 import ecnu.cs14.garagelbs.support.data.Fingerprint;
+import ecnu.cs14.garagelbs.support.data.Pair;
 
 import java.io.*;
 import java.text.SimpleDateFormat;

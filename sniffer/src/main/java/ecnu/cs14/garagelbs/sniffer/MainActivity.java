@@ -12,13 +12,13 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import ecnu.cs14.garagelbs.support.data.Fingerprint;
+import ecnu.cs14.garagelbs.support.data.Pair;
 
 import java.lang.ref.WeakReference;
 import java.util.Timer;

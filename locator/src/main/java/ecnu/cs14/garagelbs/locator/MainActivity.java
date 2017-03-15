@@ -13,7 +13,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.util.Pair;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -21,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import ecnu.cs14.garagelbs.locator.probability_distribution.AlgorithmImpl;
 import ecnu.cs14.garagelbs.support.data.Fingerprint;
+import ecnu.cs14.garagelbs.support.data.Pair;
 
 import java.io.FileNotFoundException;
 import java.lang.ref.WeakReference;

@@ -1,6 +1,5 @@
 package ecnu.cs14.garagelbs.locator.probability_distribution;
 
-import android.util.SparseIntArray;
 import ecnu.cs14.garagelbs.support.data.Ap;
 import ecnu.cs14.garagelbs.support.data.Fingerprint;
 import ecnu.cs14.garagelbs.support.data.Sample;
@@ -15,7 +14,7 @@ import java.util.*;
 final class Distribution {
     List<Ap> aps = new ArrayList<>();
     private double sampleCount;
-    private HashMap<Ap, SparseIntArray> distribution = new HashMap<>();
+    private HashMap<Ap, HashMap<Integer, Integer>> distribution = new HashMap<>();
     private HashMap<Ap, Set<Integer>> signalRanges;
     Distribution(Fingerprint fingerprint) {
         sampleCount = (double) fingerprint.sampleCount;
@@ -23,7 +22,7 @@ final class Distribution {
                 fingerprint.keySet()) {
             aps.add(ap);
             List<Integer> signals = new ArrayList<>(fingerprint.get(ap));
-            SparseIntArray array = Util.count(signals);
+            HashMap<Integer, Integer> array = Util.count(signals);
             distribution.put(ap, array);
         }
     }
@@ -33,11 +32,8 @@ final class Distribution {
             signalRanges = new HashMap<>();
         }
         if (!signalRanges.containsKey(ap)) {
-            SparseIntArray array = distribution.get(ap);
-            HashSet<Integer> signalRange = new HashSet<>();
-            for (int i = 0; i < array.size(); i++) {
-                signalRange.add(array.keyAt(i));
-            }
+            HashMap<Integer, Integer> array = distribution.get(ap);
+            Set<Integer> signalRange = array.keySet();
             signalRanges.put(ap, signalRange);
             return signalRange;
         }

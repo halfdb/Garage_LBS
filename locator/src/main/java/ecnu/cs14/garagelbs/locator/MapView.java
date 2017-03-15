@@ -7,10 +7,9 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.util.Pair;
 import android.view.View;
 import ecnu.cs14.garagelbs.support.data.MapData;
+import ecnu.cs14.garagelbs.support.data.Pair;
 
 import java.util.HashSet;
 

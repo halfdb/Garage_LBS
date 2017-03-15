@@ -18,7 +18,7 @@ public abstract class Environment {
 
     }
     public abstract List<Ap> getAps();
-    public abstract Fingerprint generateFingerprint(Collection<Ap> base);
+    public abstract Fingerprint generateFingerprint(Collection<Ap> base, int sampleCount);
     public abstract void destroy();
 
     public static Environment getInstance(Context context) {

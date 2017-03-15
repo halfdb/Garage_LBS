@@ -79,14 +79,14 @@ final class EnvironmentImpl extends Environment implements Wifi.ScanResultsRecei
     /**
      * Generates a fingerprint according to the given base. A timeout results in an empty return. Time consuming.
      * @param base A {@link Set} of {@link Ap} on which the calculation is based.
+     * @param sampleCount How many samples to take to make a single Fingerprint.
      * @return The {@link Fingerprint}.
      */
     @Override
     @NonNull
-    public Fingerprint generateFingerprint(Collection<Ap> base) {
-        final int sampleCnt = 20;
-        List[] scans = new List[sampleCnt];
-        for (int i = 0; i < sampleCnt; i++) {
+    public Fingerprint generateFingerprint(Collection<Ap> base, int sampleCount) {
+        List[] scans = new List[sampleCount];
+        for (int i = 0; i < sampleCount; i++) {
             synchronized (mResults) {
                 mWifi.scan();
                 if (!mResultsUpdated) {
@@ -98,7 +98,8 @@ final class EnvironmentImpl extends Environment implements Wifi.ScanResultsRecei
                     }
                 }
                 if (!mResultsUpdated) {
-                    return new Fingerprint();
+//                    return new Fingerprint();
+                    continue;
                 }
                 scans[i] = new ArrayList<>(mResults);
                 mResultsUpdated = false;
@@ -109,8 +110,8 @@ final class EnvironmentImpl extends Environment implements Wifi.ScanResultsRecei
         for (Ap ap :
                 base) {
 //            int signal = 0;
-            ArrayList<Integer> signals = new ArrayList<>(sampleCnt);
-            for (int i = 0; i < sampleCnt; i++) {
+            ArrayList<Integer> signals = new ArrayList<>(sampleCount);
+            for (int i = 0; i < sampleCount; i++) {
                 List scan = scans[i];
                 boolean found = false;
                 for (int j = 0; j < scan.size(); j++) {
@@ -129,7 +130,7 @@ final class EnvironmentImpl extends Environment implements Wifi.ScanResultsRecei
 //            fingerprint.put(ap, signal);
             fingerprint.put(ap, signals);
         }
-        fingerprint.sampleCount = sampleCnt;
+        fingerprint.sampleCount = sampleCount;
         Log.i(TAG, "generateFingerprint: fingerprint made: " + fingerprint.toString());
         return fingerprint;
     }

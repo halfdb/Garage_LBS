@@ -1,12 +1,7 @@
 package ecnu.cs14.garagelbs.locator.probability_distribution;
 
-import android.util.Log;
-import android.util.Pair;
 import ecnu.cs14.garagelbs.locator.Algorithm;
-import ecnu.cs14.garagelbs.support.data.Ap;
-import ecnu.cs14.garagelbs.support.data.Fingerprint;
-import ecnu.cs14.garagelbs.support.data.MapData;
-import ecnu.cs14.garagelbs.support.data.Sample;
+import ecnu.cs14.garagelbs.support.data.*;
 
 import java.util.*;
 
@@ -102,8 +97,6 @@ public final class AlgorithmImpl extends Algorithm {
         }
         x *= factor;
         y *= factor;
-
-        Log.i(TAG, "locate: x: " + x + " y: " + y);
 
         return new Pair<>((int) x, (int) y);
     }

@@ -2,10 +2,10 @@ package ecnu.cs14.garagelbs.locator;
 
 import android.content.Context;
 import android.util.Log;
-import android.util.Pair;
 import ecnu.cs14.garagelbs.support.data.Ap;
 import ecnu.cs14.garagelbs.support.data.Fingerprint;
 import ecnu.cs14.garagelbs.support.data.MapData;
+import ecnu.cs14.garagelbs.support.data.Pair;
 import ecnu.cs14.garagelbs.support.env.Environment;
 import ecnu.cs14.garagelbs.support.info.SpaceInfo;
 
@@ -84,12 +84,13 @@ public final class Locator {
         return mapIndex;
     }
 
+    private static final int sampleCount = 5;
     /**
      * Get the fingerprint at this position. Time-consuming.
      * @return The fingerprint.
      */
     public Fingerprint getFingerprint() {
-        return environment.generateFingerprint(map.aps);
+        return environment.generateFingerprint(map.aps, sampleCount);
     }
 
     public Pair<Integer, Integer> locate(Fingerprint fingerprint) {

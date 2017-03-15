@@ -1,11 +1,7 @@
 package ecnu.cs14.garagelbs.sniffer;
 
 import android.content.Context;
-import android.util.Pair;
-import ecnu.cs14.garagelbs.support.data.Ap;
-import ecnu.cs14.garagelbs.support.data.Fingerprint;
-import ecnu.cs14.garagelbs.support.data.MapData;
-import ecnu.cs14.garagelbs.support.data.Sample;
+import ecnu.cs14.garagelbs.support.data.*;
 import ecnu.cs14.garagelbs.support.env.Environment;
 import ecnu.cs14.garagelbs.support.info.SpaceInfo;
 
@@ -79,12 +75,13 @@ public final class Sniffer {
         return mapIndex;
     }
 
+    private static final int sampleCount = 20;
     /**
      * Get the fingerprint at this position. Time-consuming.
      * @return The fingerprint.
      */
     public Fingerprint getFingerprint() {
-        return environment.generateFingerprint(mapData.aps);
+        return environment.generateFingerprint(mapData.aps, sampleCount);
     }
 
     /**

@@ -1,8 +1,8 @@
 package ecnu.cs14.garagelbs.locator;
 
-import android.util.Pair;
 import ecnu.cs14.garagelbs.support.data.Fingerprint;
 import ecnu.cs14.garagelbs.support.data.MapData;
+import ecnu.cs14.garagelbs.support.data.Pair;
 
 /**
  * An abstract locating algorithm.

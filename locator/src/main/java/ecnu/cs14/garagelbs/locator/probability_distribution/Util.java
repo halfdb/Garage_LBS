@@ -1,14 +1,10 @@
 package ecnu.cs14.garagelbs.locator.probability_distribution;
 
-import android.util.Pair;
-import android.util.SparseIntArray;
 import ecnu.cs14.garagelbs.support.data.Ap;
 import ecnu.cs14.garagelbs.support.data.Fingerprint;
+import ecnu.cs14.garagelbs.support.data.Pair;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Utilities for the package.
@@ -16,8 +12,8 @@ import java.util.List;
  */
 
 final class Util {
-    static SparseIntArray count(List<Integer> numbers) {
-        SparseIntArray array = new SparseIntArray();
+    static HashMap<Integer, Integer> count(List<Integer> numbers) {
+        HashMap<Integer, Integer> array = new HashMap<>();
         Collections.sort(numbers);
         int count = 1;
         Integer signal = -1;
