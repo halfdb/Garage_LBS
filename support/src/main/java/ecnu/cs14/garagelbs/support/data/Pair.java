@@ -63,6 +63,11 @@ public class Pair<F, S> {
         return (first == null ? 0 : first.hashCode()) ^ (second == null ? 0 : second.hashCode());
     }
 
+    @Override
+    public String toString() {
+        return "(" + first.toString() + ", " + second.toString() + ")";
+    }
+
     /**
      * Convenience method for creating an appropriately typed pair.
      * @param a the first object in the Pair

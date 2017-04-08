@@ -88,7 +88,7 @@ public class MapView extends View {
     }
 
     private HashSet<Pair<Integer, Integer>> mPositions = new HashSet<>();
-    private static final float DOT_RADIUS = 5.0f;
+    private static final float DOT_RADIUS = 20.0f;
     public void drawSampleDot(Pair<Integer, Integer> position) {
         mPositions.add(position);
         invalidate();
@@ -126,7 +126,7 @@ public class MapView extends View {
             canvas.drawCircle(circle.center_left, circle.center_top, circle.radius, mShapePaint);
         }
         for (Pair<Integer, Integer> p : mPositions) {
-            canvas.drawCircle((float) p.first, (float) p.second, DOT_RADIUS, mPositionDotPaint);
+            canvas.drawCircle((float) p.first, (float) p.second, DOT_RADIUS / s, mPositionDotPaint);
         }
     }
 }

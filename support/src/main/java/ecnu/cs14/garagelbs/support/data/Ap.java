@@ -1,6 +1,5 @@
 package ecnu.cs14.garagelbs.support.data;
 
-import android.util.Pair;
 import org.json.JSONException;
 import org.json.JSONObject;
 

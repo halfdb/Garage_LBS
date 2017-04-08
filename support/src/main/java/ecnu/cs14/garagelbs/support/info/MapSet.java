@@ -15,12 +15,12 @@ import java.util.List;
  * Created by K on 2017/1/25.
  */
 
-final class MapSet {
+public final class MapSet {
     private List<MapData> mapDatas;
     private List<Ap> aps;
     private int selected = 0;
 
-    MapSet(JSONObject json) throws JSONException {
+    public MapSet(JSONObject json) throws JSONException {
         mapDatas = new ArrayList<>();
         aps = new ArrayList<>();
         JSONArray mapsJson = json.getJSONArray("maps");
@@ -85,7 +85,7 @@ final class MapSet {
         return mapDatas.get(selected);
     }
 
-    MapData getSelectedMap(int index) {
+    public MapData getSelectedMap(int index) {
         selected = index;
         return mapDatas.get(selected);
     }

@@ -41,6 +41,10 @@ final class Distribution {
     }
 
     double p(Ap ap, int signal) {
-        return ((double) distribution.get(ap).get(signal)) / sampleCount;
+        Integer count = distribution.get(ap).get(signal);
+        if (count == null) {
+            return 0.0;
+        }
+        return ((double) count) / sampleCount;
     }
 }

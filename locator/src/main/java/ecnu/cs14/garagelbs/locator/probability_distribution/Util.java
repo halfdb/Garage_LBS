@@ -28,6 +28,7 @@ final class Util {
                 signal = numbers.get(i);
             }
         }
+        array.put(signal, count);
         return array;
     }
 
