@@ -13,16 +13,15 @@ import java.util.List;
  */
 
 public final class Fingerprint extends HashMap<Ap, List<Integer>> {
-    public int sampleCount;
     public Fingerprint() {
         super();
     }
 
     public Fingerprint(List<Ap> base, JSONArray json) throws JSONException {
         super();
-        sampleCount = json.getJSONArray(0).length();
         for (int i = 0; i < base.size(); i++) {
             JSONArray signalsJson = json.getJSONArray(i);
+            int sampleCount = signalsJson.length();
             ArrayList<Integer> signals = new ArrayList<>(sampleCount);
             for (int j = 0; j < sampleCount; j++) {
                 signals.add(j, signalsJson.getInt(j));

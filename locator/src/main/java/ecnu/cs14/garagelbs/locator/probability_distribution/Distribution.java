@@ -13,17 +13,17 @@ import java.util.*;
 
 final class Distribution {
     List<Ap> aps = new ArrayList<>();
-    private double sampleCount;
+    private HashMap<Ap, Double> sampleCounts = new HashMap<>();
     private HashMap<Ap, HashMap<Integer, Integer>> distribution = new HashMap<>();
     private HashMap<Ap, Set<Integer>> signalRanges;
     Distribution(Fingerprint fingerprint) {
-        sampleCount = (double) fingerprint.sampleCount;
         for (Ap ap :
                 fingerprint.keySet()) {
             aps.add(ap);
             List<Integer> signals = new ArrayList<>(fingerprint.get(ap));
             HashMap<Integer, Integer> array = Util.count(signals);
             distribution.put(ap, array);
+            sampleCounts.put(ap, (double) signals.size());
         }
     }
 
@@ -45,6 +45,10 @@ final class Distribution {
         if (count == null) {
             return 0.0;
         }
-        return ((double) count) / sampleCount;
+        Double total = sampleCounts.get(ap);
+        if (total == 0.0) {
+            return 0.0;
+        }
+        return ((double) count) / total;
     }
 }

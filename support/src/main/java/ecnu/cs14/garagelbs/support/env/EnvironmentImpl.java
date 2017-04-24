@@ -134,7 +134,6 @@ final class EnvironmentImpl extends Environment implements Wifi.ScanResultsRecei
 //            fingerprint.put(ap, signal);
             fingerprint.put(ap, signals);
         }
-        fingerprint.sampleCount = sampleCount;
         Log.i(TAG, "generateFingerprint: fingerprint made: " + fingerprint.toString());
         return fingerprint;
     }

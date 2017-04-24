@@ -88,7 +88,6 @@ public class InteractiveAlgorithm {
                     signals.add(Integer.valueOf(s.replaceAll("\\s", "")));
                 }
                 f.put(ap, signals);
-                f.sampleCount = signals.size();
             }
             System.out.println(algorithm.locate(f));
         }

@@ -34,7 +34,6 @@ final class Util {
 
     static Fingerprint tailor(Fingerprint original, int count) {
         Fingerprint tailored = new Fingerprint();
-        tailored.sampleCount = original.sampleCount;
         List<Pair<Ap, Integer>> signal = new ArrayList<>();
         for (Ap ap :
                 original.keySet()) {
