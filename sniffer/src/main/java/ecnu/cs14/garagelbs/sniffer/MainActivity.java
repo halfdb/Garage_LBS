@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import ecnu.cs14.garagelbs.support.data.Fingerprint;
 import ecnu.cs14.garagelbs.support.data.Pair;
+import ecnu.cs14.garagelbs.support.data.Position;
 
 import java.lang.ref.WeakReference;
 import java.util.Timer;
@@ -93,18 +94,19 @@ public final class MainActivity extends AppCompatActivity {
         }
     }
 
-    private Pair<Integer, Integer> mPosition;
+    private Position mPosition;
     private boolean mPositionUpdated = false;
     private void receivePositionString(String string) {
         String[] stringPair = string.split("\\s");
-        if (stringPair.length == 2) {
-            mPosition = new Pair<>(
+        if (stringPair.length == 3) {
+            mPosition = new Position (
                     Integer.valueOf(stringPair[0]),
-                    Integer.valueOf(stringPair[1])
+                    Integer.valueOf(stringPair[1]),
+                    Integer.valueOf(stringPair[2])
             );
-            if (mPosition.first != null && mPosition.second != null) {
-                mPositionUpdated = true;
-            }
+//            if (mPosition.first != null && mPosition.second != null) {
+            mPositionUpdated = true;
+//            }
         }
         if (!mPositionUpdated) {
             showPositionInputDialog();
@@ -184,7 +186,7 @@ public final class MainActivity extends AppCompatActivity {
     private void showPositionInputDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final EditText editText = new EditText(this);
-        editText.setText("300 400");
+        editText.setText("300 400 100");
         editText.selectAll();
         builder.setTitle("输入当前坐标")
                 .setView(editText)

@@ -59,11 +59,13 @@ public class InteractiveAlgorithm {
         AlgorithmImpl algorithm = new AlgorithmImpl(mapData);
         Scanner in = new Scanner(System.in);
         while (in.hasNextLine()) {
+            // restore the fingerprint
             Fingerprint f = new Fingerprint();
             String line = in.nextLine();
             if ("".equals(line)) {
                 break;
             }
+            // a line is made up by 'AP .* [signal1, signal2...]
             for (Ap ap :
                     mapData.aps) {
                 List<Integer> signals = new ArrayList<>();

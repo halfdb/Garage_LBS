@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import ecnu.cs14.garagelbs.support.data.MapData;
 import ecnu.cs14.garagelbs.support.data.Pair;
+import ecnu.cs14.garagelbs.support.data.Position;
 
 import java.util.HashSet;
 
@@ -86,10 +87,10 @@ public class MapView extends View {
         invalidate();
     }
 
-    private HashSet<Pair<Integer, Integer>> mPositions = new HashSet<>();
-    private Pair<Integer, Integer> mPosition;
+    private HashSet<Position> mPositions = new HashSet<>();
+    private Position mPosition;
     private static final float DOT_RADIUS = 20.0f;
-    public void setPositionDot(Pair<Integer, Integer> position) {
+    public void setPositionDot(Position position) {
         mPosition = position;
         invalidate();
     }
@@ -126,7 +127,7 @@ public class MapView extends View {
             canvas.drawCircle(circle.center_left, circle.center_top, circle.radius, mShapePaint);
         }
         if (mPosition != null) {
-            canvas.drawCircle(mPosition.first, mPosition.second, DOT_RADIUS / s, mPositionDotPaint);
+            canvas.drawCircle(mPosition.x, mPosition.y, DOT_RADIUS / s, mPositionDotPaint);
         }
     }
 }

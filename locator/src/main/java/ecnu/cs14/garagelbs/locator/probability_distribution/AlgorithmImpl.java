@@ -15,7 +15,7 @@ import static java.lang.Math.*;
 public final class AlgorithmImpl extends Algorithm {
     private static final String TAG = AlgorithmImpl.class.getName();
     private ArrayList<Distribution> distributions = new ArrayList<>();
-    private ArrayList<Pair<Integer, Integer>> locations = new ArrayList<>();
+    private ArrayList<Position> locations = new ArrayList<>();
 
     private boolean closed = false;
 
@@ -31,9 +31,9 @@ public final class AlgorithmImpl extends Algorithm {
     private static final int TAILOR_AP_LIMIT = 8; // q
     private static final int TAILOR_LOCATION_LIMIT = 15; // k
     @Override
-    public Pair<Integer, Integer> locate(Fingerprint fingerprint) {
+    public Position locate(Fingerprint fingerprint) {
         if (closed) {
-            return new Pair<>(0, 0);
+            return new Position(0, 0, 0);
         }
         // tailor fingerprint and make distribution
         Distribution distribution = new Distribution(Util.tailor(fingerprint, TAILOR_AP_LIMIT));
@@ -90,15 +90,18 @@ public final class AlgorithmImpl extends Algorithm {
         // estimate the coordinate
         double x = 0;
         double y = 0;
+        double z = 0;
         for (int i = 0; i < TAILOR_LOCATION_LIMIT && i < locationCount; i++) {
-            Pair<Integer, Integer> location = locations.get(chosenLocationIndex[i]);
-            x += weight[i] * (double) location.first;
-            y += weight[i] * (double) location.second;
+            Position location = locations.get(chosenLocationIndex[i]);
+            x += weight[i] * (double) location.x;
+            y += weight[i] * (double) location.y;
+            z += weight[i] * (double) location.z;
         }
         x *= factor;
         y *= factor;
+        z *= factor;
 
-        return new Pair<>((int) x, (int) y);
+        return new Position((int) x, (int) y, (int) z);
     }
 
     @Override

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import ecnu.cs14.garagelbs.support.data.MapData;
 import ecnu.cs14.garagelbs.support.data.Pair;
+import ecnu.cs14.garagelbs.support.data.Position;
 
 import java.util.HashSet;
 
@@ -87,9 +88,9 @@ public class MapView extends View {
         invalidate();
     }
 
-    private HashSet<Pair<Integer, Integer>> mPositions = new HashSet<>();
+    private HashSet<Position> mPositions = new HashSet<>();
     private static final float DOT_RADIUS = 20.0f;
-    public void drawSampleDot(Pair<Integer, Integer> position) {
+    public void drawSampleDot(Position position) {
         mPositions.add(position);
         invalidate();
     }
@@ -125,8 +126,8 @@ public class MapView extends View {
                 mCircles) {
             canvas.drawCircle(circle.center_left, circle.center_top, circle.radius, mShapePaint);
         }
-        for (Pair<Integer, Integer> p : mPositions) {
-            canvas.drawCircle((float) p.first, (float) p.second, DOT_RADIUS / s, mPositionDotPaint);
+        for (Position p : mPositions) {
+            canvas.drawCircle((float) p.x, (float) p.y, DOT_RADIUS / s, mPositionDotPaint);
         }
     }
 }

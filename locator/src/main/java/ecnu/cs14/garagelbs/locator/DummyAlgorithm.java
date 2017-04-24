@@ -4,6 +4,7 @@ import android.util.Log;
 import ecnu.cs14.garagelbs.support.data.Fingerprint;
 import ecnu.cs14.garagelbs.support.data.MapData;
 import ecnu.cs14.garagelbs.support.data.Pair;
+import ecnu.cs14.garagelbs.support.data.Position;
 
 /**
  * A dummy that helps debugging.
@@ -19,9 +20,9 @@ public final class DummyAlgorithm extends Algorithm {
     }
 
     @Override
-    public Pair<Integer, Integer> locate(Fingerprint fingerprint) {
+    public Position locate(Fingerprint fingerprint) {
         Log.d(TAG, "locate: called");
-        return new Pair<>(0, 0);
+        return new Position(0, 0, 0);
     }
 
     @Override

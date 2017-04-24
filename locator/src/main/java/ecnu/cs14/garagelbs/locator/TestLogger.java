@@ -3,6 +3,7 @@ package ecnu.cs14.garagelbs.locator;
 import android.os.Environment;
 import ecnu.cs14.garagelbs.support.data.Fingerprint;
 import ecnu.cs14.garagelbs.support.data.Pair;
+import ecnu.cs14.garagelbs.support.data.Position;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -26,14 +27,12 @@ class TestLogger {
     void log(Test test) {
         try {
             out.write((test.toString() + '\n').getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    void log(Fingerprint fingerprint, Pair<Integer, Integer> calculated, Pair<Integer, Integer> actual) {
+    void log(Fingerprint fingerprint, Position calculated, Position actual) {
         log(new Test(fingerprint, calculated, actual));
     }
 
@@ -47,26 +46,33 @@ class TestLogger {
 
     static class Test {
         Fingerprint fingerprint;
-        Pair<Integer, Integer> calculatedPosition;
-        Pair<Integer, Integer> actualPosition;
+        Position calculatedPosition;
+        Position actualPosition;
 
-        Test(Fingerprint fingerprint, Pair<Integer, Integer> calculated, Pair<Integer, Integer> actual) {
+        Test(Fingerprint fingerprint, Position calculated, Position actual) {
             this.fingerprint = fingerprint;
             calculatedPosition = calculated;
             actualPosition = actual;
         }
 
         double error() {
-            double dx = calculatedPosition.first - actualPosition.first;
-            double dy = calculatedPosition.second - actualPosition.second;
+            double dx = calculatedPosition.x - actualPosition.x;
+            double dy = calculatedPosition.y - actualPosition.y;
+            double dz = calculatedPosition.z - actualPosition.z;
+            return Math.sqrt(dx * dx + dy * dy + dz * dz);
+        }
+
+        double error2d() {
+            double dx = calculatedPosition.x - actualPosition.x;
+            double dy = calculatedPosition.y - actualPosition.y;
             return Math.sqrt(dx * dx + dy * dy);
         }
 
         @Override
         public String toString() {
             return fingerprint.toString() + ' ' +
-                    pairToString(calculatedPosition) + ' ' +
-                    pairToString(actualPosition);
+                    calculatedPosition.toString() + ' ' +
+                    actualPosition.toString();
         }
 
         String pairToString(Pair<Integer, Integer> pair) {

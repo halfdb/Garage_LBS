@@ -86,10 +86,10 @@ public final class Sniffer {
 
     /**
      * Store the Sample given.
-     * @param position A {@link Pair} of {@link Integer} indicating the position.
+     * @param position A {@link Position} indicating the position.
      * @param fingerprint The fingerprint.
      */
-    public void storeSample(Pair<Integer, Integer> position, Fingerprint fingerprint) {
+    public void storeSample(Position position, Fingerprint fingerprint) {
         mapData.samples.add(new Sample(position, fingerprint));
         isChanged = true;
     }

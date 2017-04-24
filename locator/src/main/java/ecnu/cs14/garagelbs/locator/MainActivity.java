@@ -21,6 +21,7 @@ import android.widget.Toast;
 import ecnu.cs14.garagelbs.locator.probability_distribution.AlgorithmImpl;
 import ecnu.cs14.garagelbs.support.data.Fingerprint;
 import ecnu.cs14.garagelbs.support.data.Pair;
+import ecnu.cs14.garagelbs.support.data.Position;
 
 import java.io.FileNotFoundException;
 import java.lang.ref.WeakReference;
@@ -67,7 +68,7 @@ public final class MainActivity extends AppCompatActivity {
                 }
                 case MSG_POSITION_PAIR:
                 {
-                    mActivityRef.get().updatePosition((Pair<Integer, Integer>) msg.obj);
+                    mActivityRef.get().updatePosition((Position) msg.obj);
                     break;
                 }
                 case MSG_POSITION_STRING:
@@ -81,7 +82,7 @@ public final class MainActivity extends AppCompatActivity {
 
     private long mLastUpdateTime = 0;
     private boolean mWorking = true;
-    private void updatePosition(Pair<Integer, Integer> position) {
+    private void updatePosition(Position position) {
         long time = System.currentTimeMillis();
         if (mWorking && time - mLastUpdateTime > 3000) {
             if (position != null) {
@@ -104,7 +105,7 @@ public final class MainActivity extends AppCompatActivity {
     private void showPositionInputDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final EditText editText = new EditText(this);
-        editText.setText("300 400");
+        editText.setText("300 400 100");
         editText.selectAll();
         builder.setTitle("输入当前坐标")
                 .setView(editText)
@@ -140,18 +141,19 @@ public final class MainActivity extends AppCompatActivity {
         }).start();
     }
 
-    private Pair<Integer, Integer> mActualPosition;
+    private Position mActualPosition;
     private boolean mPositionUpdated = false;
     private synchronized void receivePositionString(String string) {
         String[] stringPair = string.split("\\s");
-        if (stringPair.length == 2) {
-            mActualPosition = new Pair<>(
+        if (stringPair.length == 3) {
+            mActualPosition = new Position(
                     Integer.valueOf(stringPair[0]),
-                    Integer.valueOf(stringPair[1])
+                    Integer.valueOf(stringPair[1]),
+                    Integer.valueOf(stringPair[2])
             );
-            if (mActualPosition.first != null && mActualPosition.second != null) {
-                mPositionUpdated = true;
-            }
+//            if (mActualPosition.x != null && mActualPosition.y != null) {
+            mPositionUpdated = true;
+//            }
         }
         if (!mPositionUpdated) {
             showPositionInputDialog();
@@ -162,7 +164,7 @@ public final class MainActivity extends AppCompatActivity {
 
     private boolean mFingerprintUpdated = false;
     private Fingerprint mFingerprint;
-    private Pair<Integer, Integer> mCalculatedPosition;
+    private Position mCalculatedPosition;
     private synchronized void receiveFingerprint(Fingerprint fingerprint) {
         mFingerprint = fingerprint;
         mFingerprintUpdated = true;
@@ -176,9 +178,10 @@ public final class MainActivity extends AppCompatActivity {
     private synchronized void logTest() {
         TestLogger.Test test = new TestLogger.Test(mFingerprint, mCalculatedPosition, mActualPosition);
         mLogger.log(test);
-        mErrorTextView.setText("实际：" + mActualPosition.first + ", " + mActualPosition.second
-                + "\n计算：" + mCalculatedPosition.first + ", " + mCalculatedPosition.second
-                + "\n误差: " + test.error());
+        mErrorTextView.setText("实际：" + mActualPosition.toString()
+                + "\n计算：" + mCalculatedPosition.toString()
+                + "\n误差: " + test.error()
+                + "\n二维误差：" + test.error2d());
         mFingerprintUpdated = false;
         mPositionUpdated = false;
         waitingDialog.dismiss();

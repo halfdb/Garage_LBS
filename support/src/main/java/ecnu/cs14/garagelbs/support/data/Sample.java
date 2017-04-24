@@ -10,18 +10,21 @@ import java.util.List;
  * Created by K on 2017/1/23.
  */
 
-public final class Sample extends Pair<Pair<Integer, Integer>, Fingerprint> {
+public final class Sample extends Pair<Position, Fingerprint> {
     public Sample(List<Ap> base, JSONObject json) throws JSONException{
-        super(new Pair<>(json.getInt("x"), json.getInt("y")),
+        super(new Position(json.getInt("x"), json.getInt("y"), json.getInt("z")),
                 new Fingerprint(base, json.getJSONArray("fingerprint"))
         );
     }
 
-    public Sample(Pair<Integer, Integer> position, Fingerprint fingerprint) {
+    public Sample(Position position, Fingerprint fingerprint) {
         super(position, fingerprint);
     }
 
     public JSONObject toJson(List<Ap> base) throws JSONException {
-        return new JSONObject().put("x", first.first).put("y", first.second).put("fingerprint", second.toJson(base));
+        return new JSONObject().put("x", first.x)
+                .put("y", first.y)
+                .put("z", first.z)
+                .put("fingerprint", second.toJson(base));
     }
 }

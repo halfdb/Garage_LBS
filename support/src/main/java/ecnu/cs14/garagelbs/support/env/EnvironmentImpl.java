@@ -113,12 +113,16 @@ final class EnvironmentImpl extends Environment implements Wifi.ScanResultsRecei
             ArrayList<Integer> signals = new ArrayList<>(sampleCount);
             for (int i = 0; i < sampleCount; i++) {
                 List scan = scans[i];
+                if (null == scan) {
+                    continue;
+                }
                 boolean found = false;
                 for (int j = 0; j < scan.size(); j++) {
                     ScanResult scanResult = (ScanResult) scan.get(j);
                     if (scanResult.BSSID.equals(ap.mac)) {
 //                        signal += WifiManager.calculateSignalLevel(scanResult.level, SIGNAL_LEVEL_NUM);
-                        signals.add(WifiManager.calculateSignalLevel(scanResult.level, SIGNAL_LEVEL_NUM));
+//                        signals.add(WifiManager.calculateSignalLevel(scanResult.level, SIGNAL_LEVEL_NUM));
+                        signals.add(scanResult.level);
                         found = true;
                         break;
                     }
