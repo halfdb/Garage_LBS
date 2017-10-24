@@ -43,7 +43,12 @@ final class FileSystem {
         if (index != null) {
             return index;
         }
-        InputStream stream = new FileInputStream(new File(path, INDEX_FILENAME));
+        File file = new File(path, INDEX_FILENAME);
+        if (!file.exists()) {
+            index = new HashMap<>();
+            return index;
+        }
+        InputStream stream = new FileInputStream(file);
         String fileString = streamToString(stream);
         JSONObject json = new JSONObject(fileString);
         Iterator<String> keys = json.keys();
@@ -64,7 +69,7 @@ final class FileSystem {
         Map<String, String> stringIndex = new HashMap<>();
         for (Ap key :
                 index.keySet()) {
-            stringIndex.put(key.mac, filename);
+            stringIndex.put(key.mac, index.get(key));
         }
         JSONObject json = new JSONObject(stringIndex);
         OutputStream stream = new FileOutputStream(new File(path, INDEX_FILENAME));

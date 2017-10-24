@@ -17,12 +17,11 @@ import java.util.List;
 
 public final class MapSet {
     private List<MapData> mapDatas;
-    private List<Ap> aps;
+    private List<Ap> aps = new ArrayList<>();
     private int selected = 0;
 
     public MapSet(JSONObject json) throws JSONException {
         mapDatas = new ArrayList<>();
-        aps = new ArrayList<>();
         JSONArray mapsJson = json.getJSONArray("maps");
         for (int i = 0; i < mapsJson.length(); i++) {
             mapDatas.add(new MapData(mapsJson.getJSONObject(i)));

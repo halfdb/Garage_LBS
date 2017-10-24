@@ -28,8 +28,14 @@ public final class AlgorithmImpl extends Algorithm {
         }
     }
 
-    private static final int TAILOR_AP_LIMIT = 8; // q
-    private static final int TAILOR_LOCATION_LIMIT = 15; // k
+    public AlgorithmImpl(MapData map, int apThreshold, int locationThreshold) {
+        this(map);
+        TAILOR_AP_LIMIT = apThreshold;
+        TAILOR_LOCATION_LIMIT = locationThreshold;
+    }
+
+    private int TAILOR_AP_LIMIT = 8; // q
+    private int TAILOR_LOCATION_LIMIT = 15; // k
     @Override
     public Position locate(Fingerprint fingerprint) {
         if (closed) {
@@ -56,13 +62,16 @@ public final class AlgorithmImpl extends Algorithm {
 
         // calculate the Bhattacharyya distance
         double[] distance = new double[locationCount];
-        double logq = log((double) TAILOR_AP_LIMIT);
+        double logq = log((double) TAILOR_AP_LIMIT < fingerprint.size() ? TAILOR_AP_LIMIT: fingerprint.size());
         for (int i = 0; i < locationCount; i++) {
             for (int j = 0; j < apCount; j++) {
                 distance[i] += coefficient[j][i];
             }
             // distance[i] = -log(distance[i] / (double) TAILOR_AP_LIMIT);
             distance[i] = logq - log(distance[i]);
+            if (distance[i] <= 1e-5) {
+                return locations.get(i);
+            }
         }
 
         // choose some nearest locations

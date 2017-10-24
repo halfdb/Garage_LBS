@@ -13,7 +13,7 @@ import java.util.List;
  */
 
 public abstract class Environment {
-    final static int SIGNAL_LEVEL_NUM = 10;
+    final static int SIGNAL_LEVEL_MIN = -200;
     Environment(Context context) {
 
     }
@@ -22,6 +22,6 @@ public abstract class Environment {
     public abstract void destroy();
 
     public static Environment getInstance(Context context) {
-        return new EnvironmentImpl(context);
+        return EnvironmentImpl.getInstance(context);
     }
 }

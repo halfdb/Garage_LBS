@@ -3,6 +3,7 @@ package ecnu.cs14.garagelbs.sniffer;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.Message;
@@ -73,6 +74,7 @@ public final class MainActivity extends AppCompatActivity {
     private void receiveSniffer(Sniffer sniffer) {
         if (sniffer == null) {
             Toast.makeText(this, "此环境无对应地图", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(this, MapCreatingActivity.class));
             return;
         }
         mSniffer = sniffer;
@@ -183,10 +185,11 @@ public final class MainActivity extends AppCompatActivity {
         showPositionInputDialog();
     }
 
+    private String previousString = "300 400 100";
     private void showPositionInputDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final EditText editText = new EditText(this);
-        editText.setText("300 400 100");
+        editText.setText(previousString);
         editText.selectAll();
         builder.setTitle("输入当前坐标")
                 .setView(editText)
@@ -194,7 +197,8 @@ public final class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Message msg = new Message();
-                        msg.obj = editText.getText().toString();
+                        previousString = editText.getText().toString();
+                        msg.obj = previousString;
                         msg.what = MainActivityHandler.MSG_POSITION_STRING;
                         mHandler.sendMessage(msg);
                     }

@@ -28,6 +28,14 @@ final class EnvironmentImpl extends Environment implements Wifi.ScanResultsRecei
         mWifi.registerScanResultsReceiver(this);
     }
 
+    private static EnvironmentImpl sInstance;
+    public static EnvironmentImpl getInstance(Context context) {
+        if (null == sInstance) {
+            sInstance = new EnvironmentImpl(context);
+        }
+        return sInstance;
+    }
+
     @Override
     public void receive(List<ScanResult> newResults) {
         synchronized (mResults) {
@@ -128,7 +136,7 @@ final class EnvironmentImpl extends Environment implements Wifi.ScanResultsRecei
                     }
                 }
                 if (!found) {
-                    signals.add(0);
+                    signals.add(SIGNAL_LEVEL_MIN);
                 }
             }
 //            fingerprint.put(ap, signal);

@@ -34,7 +34,7 @@ public class InteractiveAlgorithm {
     }
 
     public static void main(String[] args) {
-        if (args.length != 1) {
+        if (args.length != 1 && args.length != 3) {
             System.err.println("Unexpected arguments.");
             return;
         }
@@ -56,7 +56,12 @@ public class InteractiveAlgorithm {
             e.printStackTrace();
             return;
         }
-        AlgorithmImpl algorithm = new AlgorithmImpl(mapData);
+        AlgorithmImpl algorithm;
+        if (args.length == 1) {
+            algorithm = new AlgorithmImpl(mapData);
+        } else {
+            algorithm = new AlgorithmImpl(mapData, Integer.parseInt(args[1]), Integer.parseInt(args[2]));
+        }
         Scanner in = new Scanner(System.in);
         while (in.hasNextLine()) {
             // restore the fingerprint
@@ -65,7 +70,7 @@ public class InteractiveAlgorithm {
             if ("".equals(line)) {
                 break;
             }
-            // a line is made up by 'AP .* [signal1, signal2...]
+            // a line is made up by 'mac .* [signal1, signal2...]
             for (Ap ap :
                     mapData.aps) {
                 List<Integer> signals = new ArrayList<>();
