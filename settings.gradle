@@ -1,1 +1,1 @@
-include ':support', ':sniffer', ':locator'
+include ':support', ':sniffer', ':locator', ':guide'
