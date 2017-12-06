@@ -22,7 +22,7 @@ final class EnvironmentImpl extends Environment implements Wifi.ScanResultsRecei
     private final List<ScanResult> mResults = new ArrayList<>();
     private boolean mResultsUpdated = false;
 
-    EnvironmentImpl(Context context) {
+    private EnvironmentImpl(Context context) {
         super(context);
         mWifi = new Wifi(context);
         mWifi.registerScanResultsReceiver(this);
@@ -149,5 +149,6 @@ final class EnvironmentImpl extends Environment implements Wifi.ScanResultsRecei
     @Override
     public void destroy() {
         mWifi.destroy();
+        sInstance = null;
     }
 }
