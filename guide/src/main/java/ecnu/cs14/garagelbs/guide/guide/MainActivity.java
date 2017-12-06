@@ -1,4 +1,4 @@
-package lab.kel.guide;
+package ecnu.cs14.garagelbs.guide.guide;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;

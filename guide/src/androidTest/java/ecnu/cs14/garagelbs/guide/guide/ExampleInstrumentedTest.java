@@ -1,4 +1,4 @@
-package lab.kel.guide;
+package ecnu.cs14.garagelbs.guide.guide;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("lab.kel.guide", appContext.getPackageName());
+        assertEquals("ecnu.cs14.garagelbs.guide.guide", appContext.getPackageName());
     }
 }
