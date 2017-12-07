@@ -21,6 +21,10 @@ android {
     buildToolsVersion '26.0.2'
 }
 
+repositories {
+    maven { url "https://jitpack.io" }
+}
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:26.1.0'
@@ -30,4 +34,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:0.5'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.2'
     implementation project(':support')
+    compile 'com.github.onlylemi:mapview:v1.0'
 }
