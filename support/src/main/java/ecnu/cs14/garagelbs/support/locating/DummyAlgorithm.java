@@ -1,9 +1,8 @@
-package ecnu.cs14.garagelbs.locator;
+package ecnu.cs14.garagelbs.support.locating;
 
 import android.util.Log;
 import ecnu.cs14.garagelbs.support.data.Fingerprint;
 import ecnu.cs14.garagelbs.support.data.MapData;
-import ecnu.cs14.garagelbs.support.data.Pair;
 import ecnu.cs14.garagelbs.support.data.Position;
 
 /**

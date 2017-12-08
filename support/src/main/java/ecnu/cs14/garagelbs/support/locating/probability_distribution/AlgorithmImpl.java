@@ -1,6 +1,6 @@
-package ecnu.cs14.garagelbs.locator.probability_distribution;
+package ecnu.cs14.garagelbs.support.locating.probability_distribution;
 
-import ecnu.cs14.garagelbs.locator.Algorithm;
+import ecnu.cs14.garagelbs.support.locating.Algorithm;
 import ecnu.cs14.garagelbs.support.data.*;
 
 import java.util.*;

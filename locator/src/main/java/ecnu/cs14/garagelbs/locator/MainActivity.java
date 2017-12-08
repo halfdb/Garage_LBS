@@ -18,9 +18,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import ecnu.cs14.garagelbs.locator.probability_distribution.AlgorithmImpl;
+import ecnu.cs14.garagelbs.support.locating.Locator;
+import ecnu.cs14.garagelbs.support.locating.probability_distribution.AlgorithmImpl;
 import ecnu.cs14.garagelbs.support.data.Fingerprint;
-import ecnu.cs14.garagelbs.support.data.Pair;
 import ecnu.cs14.garagelbs.support.data.Position;
 
 import java.io.FileNotFoundException;

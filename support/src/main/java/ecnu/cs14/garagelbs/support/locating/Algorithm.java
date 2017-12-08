@@ -1,4 +1,4 @@
-package ecnu.cs14.garagelbs.locator;
+package ecnu.cs14.garagelbs.support.locating;
 
 import ecnu.cs14.garagelbs.support.data.Fingerprint;
 import ecnu.cs14.garagelbs.support.data.MapData;

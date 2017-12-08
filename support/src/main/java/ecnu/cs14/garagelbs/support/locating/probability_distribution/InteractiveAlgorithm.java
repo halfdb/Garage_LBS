@@ -1,4 +1,4 @@
-package ecnu.cs14.garagelbs.locator.probability_distribution;
+package ecnu.cs14.garagelbs.support.locating.probability_distribution;
 
 import ecnu.cs14.garagelbs.support.data.Ap;
 import ecnu.cs14.garagelbs.support.data.Fingerprint;

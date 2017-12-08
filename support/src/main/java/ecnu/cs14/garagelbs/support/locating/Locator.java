@@ -1,4 +1,4 @@
-package ecnu.cs14.garagelbs.locator;
+package ecnu.cs14.garagelbs.support.locating;
 
 import android.content.Context;
 import android.util.Log;

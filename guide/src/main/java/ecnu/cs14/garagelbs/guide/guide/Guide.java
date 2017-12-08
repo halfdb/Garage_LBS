@@ -3,6 +3,7 @@ package ecnu.cs14.garagelbs.guide.guide;
 import android.content.Context;
 import com.onlylemi.mapview.library.MapView;
 import com.onlylemi.mapview.library.layer.*;
+import ecnu.cs14.garagelbs.support.locating.Locator;
 
 /**
  * Controlling.
