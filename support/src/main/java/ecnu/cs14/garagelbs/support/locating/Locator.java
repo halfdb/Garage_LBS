@@ -14,7 +14,7 @@ import java.util.List;
  * Created by K on 2017/2/10.
  */
 
-public final class Locator {
+public class Locator {
     private static final String TAG = Locator.class.getName();
 
     private Environment environment;
@@ -44,6 +44,8 @@ public final class Locator {
             throw e;
         }
     }
+
+    protected Locator() { }
 
     private static MapData copyMapBase(MapData originalMap) {
         MapData map = new MapData();
